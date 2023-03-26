@@ -17,8 +17,9 @@ interface Iterator<T> {
 	setProperty: (property: string, data: any) => void;
 }
 
-function gridIteratorFrom<T>(grid: T[][], i: number, j: number) {
+function gridIteratorFrom<T>(grid: T[][], i: number, j: number, options?: IterationOptions) {
 	return gridIterator<T>(grid, {
+		... options,
 		startAt: { x: j, y: i },
 	});
 }
@@ -51,21 +52,25 @@ function wrapDataForIteration<T>(grid: T[][], i: number, j: number) {
 	};
 }
 
+type IterationOptions = {
+	startAt?: { x: number; y: number };
+	extendTo?: { x: number; y: number };
+	skip?: { x: number; y: number };
+	travelBy?: { x: number; y: number }
+}
+
 export function* gridIterator<T>(
 	grid: T[][],
-	options?: {
-		startAt?: { x: number; y: number };
-		extendTo?: { x: number; y: number };
-		skip?: { x: number; y: number };
-	}
+	options?: IterationOptions
 ): Generator<Iterator<T>> {
 	const { startAt, extendTo, skip } = options ?? {};
 	const { x, y } = startAt ?? { x: 0, y: 0 };
-	for (let i = y; i < grid.length; i++) {
+	const { x: travelX, y: travelY } = options?.travelBy ?? { x: 1, y: 1 };
+	for (let i = y; i < grid.length; i+=travelY) {
 		if (extendTo != null && i > extendTo.y) {
 			break;
 		}
-		for (let j = x; j < (grid?.[i]?.length ?? 0); j++) {
+		for (let j = x; j < (grid?.[i]?.length ?? 0); j+=travelX) {
 			if (extendTo != null && j > extendTo.x) {
 				break;
 			}
