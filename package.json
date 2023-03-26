@@ -1,0 +1,25 @@
+{
+	"name": "@curiecode/structurators",
+	"version": "0.0.000001",
+	"license": "MIT",
+	"main": "index.ts",
+	"engines": {
+		"node": ">=10"
+	},
+	"private": false,
+	"scripts": {
+		"build": "tsc",
+		"ex:grid": "tsx ./examples/grid"
+	},
+	"devDependencies": {
+		"@jupiterone/typescript-tools": "^18.1.0",
+		"@types/jest": "^29.5.0",
+		"@types/node": "^18.15.9",
+		"dotenv": "^16.0.3",
+		"jest": "^29.5.0"
+	},
+	"dependencies": {
+		"@types/lodash": "^4.14.191",
+		"lodash": "^4.17.21"
+	}
+}
